@@ -12,6 +12,7 @@
 
 @interface Gameplay()
 @property (nonatomic, strong) NSMutableArray * boxArray;
+@property (nonatomic, strong) NSMutableString * completeString;
 
 @end
 @implementation Gameplay
@@ -31,6 +32,7 @@
 - (void)didLoadFromCCB{
     self.userInteractionEnabled = TRUE;
     self.boxArray = [NSMutableArray array];
+    self.completeString = [NSMutableString string];
 }
 
 
@@ -48,9 +50,10 @@
 }
 
 - (void)setupLetterBox{
+    NSMutableArray * tempArr = [NSMutableArray arrayWithObjects:@"a",@"p",@"p",@"l",@"e",nil];
     
     for (int i = 0 ; i < 5 ; i++){
-        LetterBox * box = [[LetterBox alloc] initWithPosition:ccp(50 + 100 * i, 200) withTag:1];
+        LetterBox * box = [[LetterBox alloc] initWithPosition:ccp(50 + 100 * i, 200) withLetter:[tempArr objectAtIndex:i]];
         [self addChild:box];
         [self.boxArray addObject:box];
     }
@@ -70,28 +73,46 @@
     }
     
     if (targetView!=nil) {
-        [self placeTile:letterView atTarget:targetView];
+            
+            //2 check if letter matches
+            if ([targetView.letter isEqualToString: letterView.letter]) {
+                
+                [self.completeString appendString:letterView.letter];
+                [self placeLetter:letterView atTarget:targetView];
+                if ([self.completeString isEqualToString:@"apple"]) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Game Over" message:@"congratulations!You successfully spell the word 'apple'!" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+                    [alert show];
+                    [self.completeString setString:@""];
+                }
+                
+            } else {
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Wrong Step!" message:@"Please take another step" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+                [alert show];
+                
+            }
     }
 }
 
 
--(void)placeTile:(LetterView*)tileView atTarget:(LetterBox*)targetView
+-(void)placeLetter:(LetterView*)lView atTarget:(LetterBox*)targetView
 {
 //    targetView.isMatched = YES;
 //    tileView.isMatched = YES;
     
-    tileView.userInteractionEnabled = NO;
+    lView.userInteractionEnabled = FALSE;
     
     [UIView animateWithDuration:0.35
                           delay:0.00
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         tileView.position = targetView.position;
+                         lView.position = targetView.position;
 //                         tileView.transform = CGAffineTransformIdentity;
                      }
                      completion:^(BOOL finished){
                          targetView.visible = NO;
                      }];
+    
 }
 
 @end

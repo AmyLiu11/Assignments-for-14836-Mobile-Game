@@ -9,7 +9,7 @@
 #import "CCSprite.h"
 
 @interface LetterBox : CCSprite
-@property (nonatomic,assign)NSUInteger tag;
+@property (strong,nonatomic) NSString * letter;
 
--(instancetype)initWithPosition:(CGPoint)position withTag:(NSUInteger)tag;
+-(instancetype)initWithPosition:(CGPoint)position withLetter:(NSString *)letter;
 @end

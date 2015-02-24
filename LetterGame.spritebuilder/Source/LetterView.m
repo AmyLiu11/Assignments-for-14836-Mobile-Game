@@ -14,19 +14,13 @@
 }
 
 
-//- (void)onEnter
-//{
-//    [super onEnter];
-//    self.userInteractionEnabled = TRUE;
-//}
-
-
 -(id)initWithLetter:(NSString*)letter andPosition:(CGPoint)position{
     self = [super initWithImageNamed:@"LetterGameAssets/tile.png"];
     if(self != nil){
         float scaleSize = 0.5f;
         self.scale = scaleSize;
         self.position = position;
+        self.letter = letter;
         CGSize letterViewSize = self.contentSize;
         
         //add a letter on top

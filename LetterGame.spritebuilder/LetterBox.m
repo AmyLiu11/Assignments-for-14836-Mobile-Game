@@ -10,12 +10,12 @@
 
 @implementation LetterBox
 
--(instancetype)initWithPosition:(CGPoint)position withTag:(NSUInteger)tag{
+-(instancetype)initWithPosition:(CGPoint)position withLetter:(NSString *)letter{
     self = [super initWithImageNamed:@"LetterGameAssets/slot.png"];
     if (self != nil) {
         float scaleSize = 0.5f;
         self.scale = scaleSize;
-        self.tag = tag;
+        self.letter = letter;
         self.position = position;
     }
     return self;
